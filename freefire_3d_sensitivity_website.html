@@ -1,0 +1,528 @@
+
+<!DOCTYPE html>
+<canvas id="bg" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+<div style="position:relative;z-index:1;font-family:'Segoe UI',sans-serif;min-height:100vh;background:#0a0a0f;overflow:hidden;">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Orbitron:wght@700;900&display=swap');
+
+.site{background:#0a0a0f;min-height:800px;position:relative;overflow:hidden;}
+
+.hero-section{
+  position:relative;
+  padding:30px 20px 20px;
+  text-align:center;
+  overflow:hidden;
+}
+.hero-section::before{
+  content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);
+  width:400px;height:400px;
+  background:radial-gradient(circle, rgba(255,69,0,0.18) 0%, transparent 70%);
+  pointer-events:none;
+}
+
+.logo-ring{
+  display:inline-block;
+  width:90px;height:90px;
+  border-radius:50%;
+  border:2.5px solid #ff4500;
+  box-shadow:0 0 20px #ff4500,0 0 40px rgba(255,69,0,0.4),inset 0 0 20px rgba(255,69,0,0.1);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 14px;
+  animation:pulse-ring 2s ease-in-out infinite;
+  position:relative;
+}
+@keyframes pulse-ring{0%,100%{box-shadow:0 0 20px #ff4500,0 0 40px rgba(255,69,0,0.4);}50%{box-shadow:0 0 30px #ff6500,0 0 60px rgba(255,100,0,0.6);}}
+
+.logo-inner{
+  width:70px;height:70px;border-radius:50%;
+  background:linear-gradient(135deg,#ff4500,#ff8c00,#ffd700);
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;font-weight:900;color:#fff;
+  font-family:'Orbitron',monospace;
+  text-shadow:0 0 10px rgba(255,255,255,0.5);
+}
+
+.game-badge{
+  display:inline-block;
+  background:linear-gradient(90deg,rgba(255,69,0,0.2),rgba(255,140,0,0.2));
+  border:1px solid rgba(255,69,0,0.5);
+  color:#ff8c00;font-size:11px;letter-spacing:2px;
+  padding:4px 14px;border-radius:20px;margin-bottom:10px;
+  text-transform:uppercase;
+}
+
+.main-title{
+  font-family:'Orbitron',monospace;
+  font-size:clamp(18px,4vw,28px);
+  font-weight:900;
+  color:#fff;
+  text-shadow:0 0 20px rgba(255,69,0,0.8),0 0 40px rgba(255,140,0,0.4);
+  line-height:1.2;
+  margin-bottom:6px;
+}
+.main-title span{color:#ff4500;}
+
+.sub-title{
+  font-size:12px;color:rgba(255,255,255,0.5);
+  letter-spacing:1px;margin-bottom:16px;
+}
+
+.anni-banner{
+  background:linear-gradient(135deg,#1a0800,#2d1000,#1a0800);
+  border:1px solid rgba(255,69,0,0.4);
+  border-radius:14px;
+  padding:14px 16px;
+  margin:0 0 20px;
+  display:flex;align-items:center;gap:12px;
+  position:relative;overflow:hidden;
+}
+.anni-banner::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,#ff4500,#ffd700,#ff4500,transparent);
+}
+.anni-num{
+  font-family:'Orbitron',monospace;
+  font-size:38px;font-weight:900;
+  background:linear-gradient(180deg,#ffd700,#ff4500);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  line-height:1;flex-shrink:0;
+}
+.anni-text{text-align:left;}
+.anni-text h3{
+  font-family:'Orbitron',monospace;font-size:13px;font-weight:700;
+  color:#ffd700;text-shadow:0 0 10px rgba(255,215,0,0.5);
+  margin-bottom:3px;
+}
+.anni-text p{font-size:11px;color:rgba(255,200,100,0.7);line-height:1.4;}
+.anni-stars{
+  display:flex;gap:2px;margin-top:5px;
+}
+.star{font-size:11px;color:#ffd700;animation:twinkle 1.5s ease-in-out infinite;}
+.star:nth-child(2){animation-delay:0.3s;}
+.star:nth-child(3){animation-delay:0.6s;}
+.star:nth-child(4){animation-delay:0.9s;}
+.star:nth-child(5){animation-delay:1.2s;}
+@keyframes twinkle{0%,100%{opacity:1;}50%{opacity:0.3;}}
+
+.form-section{
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,69,0,0.2);
+  border-radius:16px;
+  padding:20px 16px;
+  margin-bottom:16px;
+  backdrop-filter:blur(10px);
+  position:relative;
+}
+.form-section::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,69,0,0.6),transparent);
+}
+
+.section-hd{
+  font-family:'Orbitron',monospace;
+  font-size:12px;color:#ff8c00;letter-spacing:1.5px;
+  margin-bottom:14px;text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;
+}
+.dot{width:6px;height:6px;border-radius:50%;background:#ff4500;box-shadow:0 0 6px #ff4500;}
+
+.field{margin-bottom:12px;}
+.field label{display:block;font-size:11px;color:rgba(255,255,255,0.5);letter-spacing:0.5px;margin-bottom:5px;text-transform:uppercase;}
+.field select,.field input{
+  width:100%;height:42px;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,69,0,0.25);
+  border-radius:8px;
+  color:#fff;font-size:13px;padding:0 12px;
+  outline:none;appearance:none;
+  transition:border-color 0.2s,box-shadow 0.2s;
+}
+.field select:focus,.field input:focus{
+  border-color:#ff4500;
+  box-shadow:0 0 12px rgba(255,69,0,0.25);
+}
+.field select option{background:#1a0a00;color:#fff;}
+
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+.calc-btn{
+  width:100%;height:48px;
+  background:linear-gradient(135deg,#ff4500 0%,#ff6500 50%,#ff8c00 100%);
+  border:none;border-radius:10px;
+  color:#fff;
+  font-family:'Orbitron',monospace;
+  font-size:13px;font-weight:700;letter-spacing:1px;
+  cursor:pointer;
+  position:relative;overflow:hidden;
+  transition:transform 0.15s;
+  box-shadow:0 4px 20px rgba(255,69,0,0.4);
+}
+.calc-btn::before{
+  content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);
+  transition:left 0.4s;
+}
+.calc-btn:hover::before{left:100%;}
+.calc-btn:hover{transform:translateY(-2px);box-shadow:0 6px 30px rgba(255,69,0,0.6);}
+.calc-btn:active{transform:scale(0.98);}
+
+.result-section{
+  display:none;
+  background:rgba(0,0,0,0.4);
+  border:1px solid rgba(255,69,0,0.35);
+  border-radius:16px;
+  padding:20px 16px;
+  margin-bottom:16px;
+  animation:slide-up 0.4s ease;
+  position:relative;
+  overflow:hidden;
+}
+.result-section::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,#ff4500,#ffd700,#ff4500);
+  animation:shimmer 2s linear infinite;
+}
+@keyframes shimmer{0%{background-position:0% 0%;}100%{background-position:200% 0%;}}
+@keyframes slide-up{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.result-section.show{display:block;}
+
+.hs-big{
+  text-align:center;
+  padding:20px 0 16px;
+}
+.hs-big-num{
+  font-family:'Orbitron',monospace;
+  font-size:64px;font-weight:900;
+  background:linear-gradient(180deg,#fff 0%,#ffd700 40%,#ff4500 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  line-height:1;
+  filter:drop-shadow(0 0 20px rgba(255,69,0,0.6));
+}
+.hs-big-label{
+  font-family:'Orbitron',monospace;
+  font-size:11px;color:#ff8c00;letter-spacing:2px;
+  margin-top:4px;text-transform:uppercase;
+}
+.hs-sub-label{font-size:10px;color:rgba(255,255,255,0.35);margin-top:2px;}
+
+.sens-grid{
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;
+  margin:14px 0;
+}
+.sens-card{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,69,0,0.15);
+  border-radius:8px;padding:10px 8px;text-align:center;
+  transition:border-color 0.2s,transform 0.2s;
+}
+.sens-card:hover{border-color:rgba(255,69,0,0.4);transform:translateY(-2px);}
+.sc-label{font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:0.5px;margin-bottom:4px;text-transform:uppercase;}
+.sc-val{
+  font-family:'Orbitron',monospace;
+  font-size:20px;font-weight:700;
+  color:#ff6500;
+  text-shadow:0 0 10px rgba(255,100,0,0.4);
+}
+.sc-sub{font-size:8px;color:rgba(255,255,255,0.3);margin-top:2px;}
+
+.tips-box{
+  background:rgba(255,140,0,0.06);
+  border:1px solid rgba(255,140,0,0.2);
+  border-radius:8px;padding:12px;margin-top:12px;
+}
+.tips-title{font-size:11px;font-weight:700;color:#ff8c00;letter-spacing:0.5px;margin-bottom:8px;text-transform:uppercase;}
+.tip-item{
+  display:flex;align-items:flex-start;gap:8px;
+  font-size:11px;color:rgba(255,255,255,0.6);
+  margin-bottom:5px;line-height:1.4;
+}
+.tip-dot{width:4px;height:4px;border-radius:50%;background:#ff4500;flex-shrink:0;margin-top:5px;}
+
+.footer{
+  text-align:center;
+  padding:12px 0 6px;
+  font-size:10px;
+  color:rgba(255,255,255,0.15);
+  letter-spacing:1px;
+  border-top:1px solid rgba(255,69,0,0.1);
+  margin-top:8px;
+}
+.footer span{color:rgba(255,69,0,0.4);}
+
+.ff-title-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,69,0,0.1);
+  border:1px solid rgba(255,69,0,0.3);
+  border-radius:6px;padding:4px 10px;
+  font-size:10px;color:rgba(255,150,50,0.8);
+  margin-bottom:14px;letter-spacing:0.5px;
+}
+
+.particles{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden;}
+.particle{
+  position:absolute;border-radius:50%;
+  animation:float-up linear infinite;
+  opacity:0;
+}
+@keyframes float-up{
+  0%{opacity:0;transform:translateY(0) scale(0);}
+  10%{opacity:1;}
+  90%{opacity:0.3;}
+  100%{opacity:0;transform:translateY(-200px) scale(1.5);}
+}
+</style>
+
+<div class="site">
+  <div class="particles" id="particles"></div>
+  <div style="position:relative;z-index:2;max-width:480px;margin:0 auto;padding:16px;">
+
+    <div class="hero-section">
+      <div class="logo-ring">
+        <div class="logo-inner">FF</div>
+      </div>
+      <div class="game-badge">GARENA FREE FIRE</div>
+      <h1 class="main-title">HEADSHOT<br><span>SENSITIVITY</span> FINDER</h1>
+      <p class="sub-title">FREE FIRE HEADSHOT SENSITIVITY • BEST SETTINGS</p>
+
+      <div class="ff-title-badge">
+        FREE FIRE HEADSHOT SENSITIVITY CALCULATOR
+      </div>
+
+      <div class="anni-banner">
+        <div class="anni-num">9</div>
+        <div class="anni-text">
+          <h3>9TH ANNIVERSARY</h3>
+          <p>Garena Free Fire — 9 saal ki journey<br>celebrating with best headshot sensitivity!</p>
+          <div class="anni-stars">
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-hd"><div class="dot"></div>MOBILE DETAILS DAALO</div>
+
+      <div class="field">
+        <label>Mobile Brand</label>
+        <select id="brand">
+          <option value="">-- Brand chunein --</option>
+          <option value="samsung">Samsung</option>
+          <option value="realme">Realme</option>
+          <option value="redmi">Redmi / Xiaomi</option>
+          <option value="poco">POCO</option>
+          <option value="oppo">OPPO</option>
+          <option value="vivo">Vivo</option>
+          <option value="oneplus">OnePlus</option>
+          <option value="iphone">iPhone (Apple)</option>
+          <option value="motorola">Motorola</option>
+          <option value="infinix">Infinix</option>
+          <option value="tecno">Tecno</option>
+          <option value="iqoo">iQOO</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Processor / Chipset</label>
+        <select id="processor">
+          <option value="">-- Processor chunein --</option>
+          <optgroup label="Snapdragon High-End">
+            <option value="snap_8gen3">Snapdragon 8 Gen 3 / Gen 2</option>
+            <option value="snap_8gen1">Snapdragon 8 Gen 1 / 888</option>
+            <option value="snap_870">Snapdragon 870 / 865</option>
+          </optgroup>
+          <optgroup label="Snapdragon Mid-Range">
+            <option value="snap_7s2">Snapdragon 7s Gen 2 / 778G</option>
+            <option value="snap_6gen1">Snapdragon 6 Gen 1 / 695</option>
+            <option value="snap_680">Snapdragon 680 / 662</option>
+          </optgroup>
+          <optgroup label="MediaTek Dimensity">
+            <option value="dimensity_9200">Dimensity 9200 / 9000</option>
+            <option value="dimensity_8200">Dimensity 8200 / 8100</option>
+            <option value="dimensity_1200">Dimensity 1200 / 1100</option>
+            <option value="dimensity_900">Dimensity 900 / 810</option>
+            <option value="dimensity_700">Dimensity 700 / 6020</option>
+          </optgroup>
+          <optgroup label="MediaTek Helio">
+            <option value="helio_g99">Helio G99 / G96 / G95</option>
+            <option value="helio_g85">Helio G85 / G80</option>
+            <option value="helio_g35">Helio G35 / P35</option>
+          </optgroup>
+          <optgroup label="Apple">
+            <option value="apple_a17">Apple A17 Pro / A16 Bionic</option>
+            <option value="apple_a15">Apple A15 / A14 Bionic</option>
+            <option value="apple_a13">Apple A13 / A12 Bionic</option>
+          </optgroup>
+          <optgroup label="Other">
+            <option value="unisoc">Unisoc T606 / T612 / T700</option>
+          </optgroup>
+        </select>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label>Kharide ka Saal</label>
+          <select id="year">
+            <option value="">-- Year --</option>
+            <option value="2024">2024 - 2025</option>
+            <option value="2022">2022 - 2023</option>
+            <option value="2020">2020 - 2021</option>
+            <option value="2018">2018 - 2019</option>
+            <option value="old">2017 ya pehle</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Screen Size</label>
+          <select id="screen">
+            <option value="">-- Size --</option>
+            <option value="small">6.0" se chhota</option>
+            <option value="medium">6.0" - 6.5"</option>
+            <option value="large">6.5" - 6.8"</option>
+            <option value="xlarge">6.8" se bada</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="calc-btn" onclick="calculate()">
+        &#9654; HEADSHOT SENSITIVITY NIKALO
+      </button>
+    </div>
+
+    <div class="result-section" id="result">
+      <div class="section-hd"><div class="dot"></div>FREE FIRE HEADSHOT SENSITIVITY</div>
+
+      <div class="hs-big">
+        <div class="hs-big-num" id="hs-main">--</div>
+        <div class="hs-big-label">HEADSHOT SENSITIVITY</div>
+        <div class="hs-sub-label" id="device-name">Free Fire Garena Best Setting</div>
+      </div>
+
+      <div class="sens-grid">
+        <div class="sens-card">
+          <div class="sc-label">General</div>
+          <div class="sc-val" id="s-general">--</div>
+          <div class="sc-sub">Movement</div>
+        </div>
+        <div class="sens-card">
+          <div class="sc-label">Red Dot</div>
+          <div class="sc-val" id="s-reddot">--</div>
+          <div class="sc-sub">Close Range</div>
+        </div>
+        <div class="sens-card">
+          <div class="sc-label">2x Scope</div>
+          <div class="sc-val" id="s-2x">--</div>
+          <div class="sc-sub">Mid Range</div>
+        </div>
+        <div class="sens-card">
+          <div class="sc-label">4x Scope</div>
+          <div class="sc-val" id="s-4x">--</div>
+          <div class="sc-sub">Long Range</div>
+        </div>
+        <div class="sens-card">
+          <div class="sc-label">Sniper</div>
+          <div class="sc-val" id="s-sniper">--</div>
+          <div class="sc-sub">AWM Scope</div>
+        </div>
+        <div class="sens-card">
+          <div class="sc-label">Free Look</div>
+          <div class="sc-val" id="s-freelook">--</div>
+          <div class="sc-sub">Camera</div>
+        </div>
+      </div>
+
+      <div class="tips-box">
+        <div class="tips-title">PRO TIPS — HEADSHOT MASTER</div>
+        <div id="tips-list"></div>
+      </div>
+    </div>
+
+    <div class="footer">
+      FREE FIRE HEADSHOT SENSITIVITY FINDER &nbsp;|&nbsp; <span>GARENA FREE FIRE 9TH ANNIVERSARY</span>
+      <br><br>
+      Made with &#9829; by <span style="color:rgba(255,140,0,0.6);letter-spacing:2px;">ATHARV</span>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function(){
+  var p=document.getElementById('particles');
+  for(var i=0;i<25;i++){
+    var d=document.createElement('div');
+    d.className='particle';
+    var size=Math.random()*4+2;
+    var colors=['#ff4500','#ff8c00','#ffd700','#ff6500','rgba(255,69,0,0.6)'];
+    d.style.cssText='width:'+size+'px;height:'+size+'px;background:'+colors[Math.floor(Math.random()*colors.length)]+';left:'+Math.random()*100+'%;top:'+(50+Math.random()*50)+'%;animation-duration:'+(3+Math.random()*5)+'s;animation-delay:'+Math.random()*4+'s;';
+    p.appendChild(d);
+  }
+})();
+
+function calculate(){
+  var brand=document.getElementById('brand').value;
+  var proc=document.getElementById('processor').value;
+  var year=document.getElementById('year').value;
+  var screen=document.getElementById('screen').value;
+  if(!brand||!proc||!year||!screen){alert('Bhai! Sabhi fields fill karo pehle!');return;}
+
+  var ps={snap_8gen3:10,snap_8gen1:9,snap_870:8,snap_7s2:7,snap_6gen1:6,snap_680:5,dimensity_9200:10,dimensity_8200:9,dimensity_1200:8,dimensity_900:7,dimensity_700:6,helio_g99:7,helio_g85:6,helio_g35:4,apple_a17:10,apple_a15:9,apple_a13:8,unisoc:4};
+  var ys={'2024':3,'2022':2,'2020':1,'2018':0,'old':-1};
+  var sm={small:2,medium:0,large:-1,xlarge:-2};
+
+  var total=(ps[proc]||5)+(ys[year]||0);
+  var mod=sm[screen]||0;
+
+  var hs,gen,rd,s2,s4,sn,fl;
+  if(total>=12){hs=82;gen=70;rd=78;s2=65;s4=58;sn=45;fl=80;}
+  else if(total>=10){hs=78;gen=66;rd=74;s2=61;s4=54;sn=42;fl=76;}
+  else if(total>=8){hs=74;gen=62;rd=70;s2=57;s4=50;sn=38;fl=72;}
+  else if(total>=6){hs=70;gen=58;rd=66;s2=53;s4=46;sn=35;fl=68;}
+  else if(total>=4){hs=65;gen=54;rd=62;s2=49;s4=42;sn=32;fl=64;}
+  else{hs=60;gen=50;rd=58;s2=45;s4=38;sn=30;fl=60;}
+
+  hs=Math.min(100,Math.max(10,hs+mod));
+  gen=Math.min(100,Math.max(10,gen+mod));
+  rd=Math.min(100,Math.max(10,rd+mod));
+
+  var bn={samsung:'Samsung',realme:'Realme',redmi:'Redmi/Xiaomi',poco:'POCO',oppo:'OPPO',vivo:'Vivo',oneplus:'OnePlus',iphone:'iPhone',motorola:'Motorola',infinix:'Infinix',tecno:'Tecno',iqoo:'iQOO'};
+
+  document.getElementById('device-name').textContent=bn[brand]+' — Free Fire Garena Optimized';
+  document.getElementById('hs-main').textContent=hs;
+  document.getElementById('s-general').textContent=gen;
+  document.getElementById('s-reddot').textContent=rd;
+  document.getElementById('s-2x').textContent=s2;
+  document.getElementById('s-4x').textContent=s4;
+  document.getElementById('s-sniper').textContent=sn;
+  document.getElementById('s-freelook').textContent=fl;
+
+  var allTips=[
+    'Crosshair hamesha enemy ke sar ke level pe rakho',
+    'Practice mode mein rozana 15 min warm up karo',
+    'Gyroscope ON karo — headshot accuracy 2x ho jaati hai',
+    '2x scope se headshot ke liye Red Dot se thodi kam sensitivity rakho',
+    'Chhoti screen pe sensitivity thodi zyada best feel deti hai',
+    'Badi screen pe kam sensitivity se zyada control milta hai',
+    'Custom HUD mein fire button comfortable position pe rakho',
+    'Settings save karo, training ground mein test karo, phir adjust karo',
+    'Har match ke baad apna headshot rate check karo aur settings tweak karo'
+  ];
+
+  var tipSet=total>=10?[allTips[0],allTips[2],allTips[3],allTips[7]]:total>=7?[allTips[0],allTips[1],allTips[6],allTips[7]]:[allTips[0],allTips[1],allTips[2],allTips[8]];
+  if(screen==='small')tipSet.push(allTips[4]);
+  else if(screen==='large'||screen==='xlarge')tipSet.push(allTips[5]);
+
+  var html='';
+  tipSet.forEach(function(t){html+='<div class="tip-item"><div class="tip-dot"></div><span>'+t+'</span></div>';});
+  document.getElementById('tips-list').innerHTML=html;
+
+  var r=document.getElementById('result');
+  r.classList.add('show');
+  r.scrollIntoView({behavior:'smooth',block:'start'});
+}
+</script>
